@@ -43,7 +43,8 @@ shinyUI(fluidPage(
                         "Longitude",
                         min = -180,
                         max = 180,
-                        value = 0)
+                        value = 0),
+            checkboxInput("circ", "Add circles?")
         ),
 
         # Show a plot of the generated distribution
