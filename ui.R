@@ -9,47 +9,28 @@
 
 library(shiny)
 
-geocodeAdddress <- function(address) {
-    require(RJSONIO)
-    source('./key.R')
-    url <- 'http://api.positionstack.com/v1/forward?access_key='
-    url <- URLencode(paste(url, key, '&query=', address, "&limit=1", sep = ""))
-    x <- fromJSON(url, simplify = FALSE)
-    if (length(x$data)) {
-        out <- c(x$data[[1]]$longitude, x$data[[1]]$latitude)
-    } else {
-        out <- NA
-    }
-    out
-}
-
-
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
     # Application title
     titlePanel("Geolocation Playground"),
+    
+    # Documentation
+    h4('Enter an address and click geolocate to access the approximate latitude and longitude coordinates and the point map. If you want to add a circle to the point on the map, activate the option "Add Circle"'),
 
     # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
-            textInput("address", "Address to Geolocate", "Example: 1600 Pennsylvania Ave NW, Washington DC"),
-            sliderInput("lat",
-                        "Latitude",
-                        min = -90,
-                        max = 90,
-                        value = 0),
-            sliderInput("long",
-                        "Longitude",
-                        min = -180,
-                        max = 180,
-                        value = 0),
-            checkboxInput("circ", "Add circles?")
+            textInput("address", "Address to Geolocate", "1600 Pennsylvania Ave NW, Washington DC"),
+            textOutput("lat"),
+            textOutput("long"),
+            checkboxInput("circ", "Add Circle?"),
+            submitButton('Geolocate')
         ),
 
         # Show a plot of the generated distribution
         mainPanel(
-            plotOutput("distPlot")
+            leafletOutput("map", height = 550)
         )
     )
 ))
