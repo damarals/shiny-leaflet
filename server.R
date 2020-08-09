@@ -7,7 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 
-library(shiny)
+require(shiny)
 require(leaflet)
 
 geocodeAdddress <- function(address) {
